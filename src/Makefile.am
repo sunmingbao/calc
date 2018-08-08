@@ -1,3 +1,3 @@
 bin_PROGRAMS = calc
-hello_SOURCES = main.c
+calc_SOURCES = main.c
 

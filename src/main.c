@@ -1,8 +1,8 @@
-#include <config .h>
-#include <stdio .h>
+#include <config.h>
+#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
-	printf("hello, this is %s.\n", PACKAGE STRING);
+	printf("hello, this is %s.\n", PACKAGE_STRING);
 	return 0;
 }
