@@ -6,12 +6,18 @@
        calc  operand1  OPb  operand2
 
 ## DESCRIPTION
-    calc is a very simple calculator, it calculates the result of expressions and output the result to the standard output.
+    calc is a very simple calculator, it calculates the 
+result of expressions and output the result to the 
+standard output.
 
-    In the above synopsis, the OPu indicates an unary operator that only needs one operand(e.g. ++, --, ~, !), the OPb indicates an binary operator that needs two operands(e.g. +, -, *, /, %).
+    In the above synopsis, the OPu indicates an unary 
+operator that only needs one operand(e.g. ++, --, ~, !), 
+the OPb indicates an binary operator that needs two 
+operands(e.g. +, -, *, /, %).
 
     calc supports only the simplest expressions.
-    Expressions passed to calc must meets the following restrictions.
+    Expressions passed to calc must meets the 
+following restrictions.
 
 * has only one operator
 * has only one operand when the operator is an unary operator(OPu)
@@ -20,16 +26,17 @@
 
     The following are examples of valid usage.
     To avoid expanding mechanism from shell, some operators are surrounded with '' or "".
-* calc 1 + 2
-* calc 1 - 3
-* calc -3 '*' 8
-* calc 0x1234 '*' 0X5678
-* calc 0123 - 8
-* calc 0B10100101 % 0b1100
-* calc 2 "<<" 10
-* calc "++" 1023
-* calc "~" 0xF
-* calc 5 '>' 6
+
+        calc 1 + 2
+        calc 1 - 3
+        calc -3 '*' 8
+        calc 0x1234 '*' 0X5678
+        calc 0123 - 8
+        calc 0B10100101 % 0b1100
+        calc 2 "<<" 10
+        calc "++" 1023
+        calc "~" 0xF
+        calc 5 '>' 6
 
 ## OPERAND
 PREFIX    BASE
@@ -38,11 +45,13 @@ PREFIX    BASE
 0x/0X    16 (hex)
 +/-      10 (decimal)
 
-    if an operand does not starts with any of the above prefix, then calc would determine its base with the following logic.
-	if (operand contains char in [a-f] or [A-F])
-		base=16
-	else
-		base=10
+    if an operand does not starts with any of the 
+above prefix, then calc would determine its base 
+with the following logic.
+        if (operand contains char in [a-f] or [A-F])
+                base=16
+        else
+                base=10
 
 ## OPERATOR
 SYNTAX          TYPE    DESCRIPTION
