@@ -1,13 +1,3 @@
-/* 
- * 本软件为免费、开源软件。
- * 本软件的版权(包括源码及二进制发布版本)归一切公众所有。
- * 您可以自由使用、传播本软件。
- * 您也可以以任何形式、任何目的使用本软件(包括源码及二进制发布版本)，而不受任何版权限制。
- * =====================
- * 作者: 孙明保
- * 邮箱: sunmingbao@126.com
- */
-
 #ifndef  __TRACE_DBG_H__
 #define  __TRACE_DBG_H__
 
@@ -26,6 +16,9 @@ extern "C" {
                                   ret = ((ret==NULL)?file_path:ret+1); \
                                   ret;})
 
+#define    __DEBUG_PRINT
+
+#ifdef __DEBUG_PRINT
 #define    TRACE_DBG(fmt, args...) \
     do \
     { \
@@ -33,7 +26,18 @@ extern "C" {
         fflush(stdout); \
     } while (0)
 
+void print_mem(void *start_addr, uint32_t length);
+	
+#else
 
+#define    TRACE_DBG(fmt, args...) /* */
+
+static inline void print_mem(void *start_addr, uint32_t length)
+{
+    return;
+}
+
+#endif
 
 #define    TRACE_ERR(fmt, args...) \
     do \
@@ -63,11 +67,10 @@ extern "C" {
         exit(1); \
     } while (0)
 
-void print_mem(void *start_addr, uint32_t length);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TRACE_H__ */
+#endif /* __TRACE_DBG_H__ */
 
