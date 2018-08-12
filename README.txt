@@ -47,11 +47,11 @@
 
 [OPERAND]
 
-        PREFIX    BASE
-        0b/0B     2 (bin)
-        0         8 (octal)
-        0x/0X    16 (hex)
-        +/-      10 (decimal)
+        PREFIX              BASE
+        0b/0B               2  (bin)
+        0                   8  (octal)
+        0x/0X               16 (hex)
+        nothing or +/-      10 (decimal)
 
         if an operand does not starts with any of the above prefix,
     then calc would determine its base with the following logic.
@@ -88,6 +88,9 @@
         --output-base-16
         --output-hex
             output result in hex format.
-        
+
+        --output-unsigned-decimal
+            output result in unsigned decimal format.
+
         --output-no-prefix
             output result without prefix such as 0/0x/0X/0b/0B.

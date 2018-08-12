@@ -8,7 +8,8 @@ extern "C" {
 #endif
 
 
-#define    FLAG_OUTPUT_NO_PREFIX    0x1
+#define    FLAG_OUTPUT_NO_PREFIX           0x1
+#define    FLAG_OUTPUT_UNSIGNED_DECIMAL    0x2
 
 struct work_params {
 	int verbose;

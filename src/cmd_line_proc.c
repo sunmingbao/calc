@@ -38,7 +38,7 @@ static void show_version(void)
 #define    OPT_OUTPUT_BASE_16   (1103)
 
 #define    OPT_OUTPUT_NO_PREFIX    (1201)
-
+#define    OPT_OUTPUT_US_DECIMAL   (1202)
 
 
 static struct option cmd_line_options[] =
@@ -57,8 +57,8 @@ static struct option cmd_line_options[] =
         {"output-base-hex",    no_argument, NULL, OPT_OUTPUT_BASE_16},
 
 
-        {"output-no-prefix",    no_argument, NULL, OPT_OUTPUT_NO_PREFIX},
-
+        {"output-no-prefix",           no_argument, NULL, OPT_OUTPUT_NO_PREFIX},
+        {"output-unsigned-decimal",    no_argument, NULL, OPT_OUTPUT_US_DECIMAL},
         {NULL},
     };
 
@@ -122,6 +122,10 @@ void parse_cmd_line_args(int argc, char *argv[])
 				the_work_params.output_base = 16;
 				break;
 
+			case OPT_OUTPUT_US_DECIMAL:
+				the_work_params.output_base = 10;
+				the_work_params.flags |= FLAG_OUTPUT_UNSIGNED_DECIMAL;
+				break;
 
 			case OPT_OUTPUT_NO_PREFIX:
 				the_work_params.flags |= FLAG_OUTPUT_NO_PREFIX;
