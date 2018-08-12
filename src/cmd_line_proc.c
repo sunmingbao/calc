@@ -134,7 +134,6 @@ void parse_cmd_line_args(int argc, char *argv[])
 
 			case OPT_VERBOSE:
 				the_work_params.verbose = 1;
-				TRACE_DBG("verbose enabled");
 				break;
 
 
@@ -173,15 +172,6 @@ void parse_cmd_line_args(int argc, char *argv[])
 
 	new_optind = optind;
 	args_left = argc - new_optind;
-
-	printf("optind %d %d\n", orig_optind, new_optind);
-           if (new_optind < argc) {
-		int optind_tmp = new_optind;
-               printf("non-option ARGV-elements: \n");
-               while (optind_tmp < argc)
-                   printf("%s \n", argv[optind_tmp++]);
-
-           }
 
 	if (args_left<2 || args_left>3) {
 		show_usage(PURE_FILE_NAME(argv[0]));

@@ -35,6 +35,8 @@ uint64_t calc_expr_binary_core(const char *operator, uint64_t operand1, uint64_t
 
 
 	if (strcmp(operator, "/")==0) {
+		if (0==operand2)
+			TRACE_PARAM_WRONG_QUIT("operand1 divided by 0");
 		ret = operand1/operand2;
 		goto EXIT;
 	}
@@ -179,7 +181,7 @@ void test_calc_expr_unary(void)
 
 void output_result(uint64_t result)
 {
-	printf("hehe: %llu\n", result);
+	printf("%llu\n", result);
 }
 
 void calc_expr(void)
