@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <assert.h>
 
 #include "trace_dbg.h"
 #include "calc_expr.h"
@@ -12,17 +13,114 @@ struct operand {
 	};
 };
 
-void calc_expr(void)
+uint64_t calc_expr_binary_core(const char *operator, uint64_t operand1, uint64_t operand2)
 {
-	struct work_params * the_work_params = get_work_params();
+	uint64_t ret;
 
-	TRACE_DBG("==arg_num %d", the_work_params->arg_num);
-str2int_test();
-	if (the_work_params->arg_num==2) {
-
-	} else {
-
+	if (strcmp(operator, "+")==0) {
+		ret = operand1+operand2;
+		goto EXIT;
 	}
 
 
+	if (strcmp(operator, "-")==0) {
+		ret = operand1-operand2;
+		goto EXIT;
+	}
+
+	if (strcmp(operator, "*")==0) {
+		ret = operand1*operand2;
+		goto EXIT;
+	}
+
+
+	if (strcmp(operator, "/")==0) {
+		ret = operand1/operand2;
+		goto EXIT;
+	}
+
+	if (strcmp(operator, "==")==0) {
+		ret = (operand1==operand2);
+		goto EXIT;
+	}
+
+	if (strcmp(operator, "!=")==0) {
+		ret = (operand1!=operand2);
+		goto EXIT;
+	}
+EXIT:
+	return ret;
+}
+
+void test_calc_expr_binary_core(void)
+{
+	assert(calc_expr_binary_core("+", 1, 2)==3);
+	assert(calc_expr_binary_core("-", 5, 1)==4);
+	assert(calc_expr_binary_core("*", 4, 2)==8);
+	assert(calc_expr_binary_core("/", 100, 2)==50);
+	assert(calc_expr_binary_core("==", 100, 2)==0);
+	assert(calc_expr_binary_core("!=", 100, 2)==1);
+	assert(calc_expr_binary_core("==", 100, 100)==1);
+	assert(calc_expr_binary_core("!=", 100, 100)==0);
+}
+
+uint64_t calc_expr_binary(const char *operator, const char *operand1, const char *operand2)
+{
+	uint64_t result, operand1_uint, operand2_uint;
+
+	operand1_uint = str2decimal(operand1);
+	operand2_uint = str2decimal(operand2);
+
+	return calc_expr_binary_core(operator, operand1_uint, operand2_uint);
+
+}
+
+void test_calc_expr_binary(void)
+{
+	assert(calc_expr_binary("+",  "1", "2")==3);
+	assert(calc_expr_binary("-",  "5", "1")==4);
+	assert(calc_expr_binary("*",  "4", "2")==8);
+	assert(calc_expr_binary("/",  "100", "2")==50);
+	assert(calc_expr_binary("==", "100", "2")==0);
+	assert(calc_expr_binary("!=", "100", "2")==1);
+	assert(calc_expr_binary("==", "100", "100")==1);
+	assert(calc_expr_binary("!=", "100", "100")==0);
+}
+
+uint64_t calc_expr_unary(const char *operator, const char *operand1)
+{
+	uint64_t result;
+
+	return result;
+}
+
+void output_result(uint64_t result)
+{
+
+}
+
+void calc_expr(void)
+{
+	struct work_params * the_work_params = get_work_params();
+	uint64_t result;
+
+	test_calc_expr_binary_core();
+	test_calc_expr_binary();
+
+	if (the_work_params->arg_num==2) {
+		verbose_print("unary calculate\n");
+		verbose_print("operator is %s\n", the_work_params->operator);
+		verbose_print("operand1 = %s\n", the_work_params->operand1);
+		result = calc_expr_unary(the_work_params->operator, the_work_params->operand1);
+
+	} else {
+		verbose_print("binary calculate\n");
+		verbose_print("operator is %s\n", the_work_params->operator);
+		verbose_print("operand1 = %s\n", the_work_params->operand1);
+		verbose_print("operand2 = %s\n", the_work_params->operand2);
+		result = calc_expr_binary(the_work_params->operator, the_work_params->operand1, the_work_params->operand2);
+
+	}
+
+	output_result(result);
 }

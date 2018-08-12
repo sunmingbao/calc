@@ -16,13 +16,15 @@ extern "C" {
                                   ret = ((ret==NULL)?file_path:ret+1); \
                                   ret;})
 
+void verbose_print(const char *fmt, ...);
+
 #define    __DEBUG_PRINT
 
 #ifdef __DEBUG_PRINT
 #define    TRACE_DBG(fmt, args...) \
     do \
     { \
-        printf("DBG:%s(%d)-%s:\n"fmt"\n", PURE_FILE_NAME(__FILE__),__LINE__,__FUNCTION__,##args); \
+        fprintf(stdout, "DBG:%s(%d)-%s:\n"fmt"\n", PURE_FILE_NAME(__FILE__),__LINE__,__FUNCTION__,##args); \
         fflush(stdout); \
     } while (0)
 
@@ -42,14 +44,14 @@ static inline void print_mem(void *start_addr, uint32_t length)
 #define    TRACE_ERR(fmt, args...) \
     do \
     { \
-        printf("error:%s(%d)-%s:\n"fmt": %s\n", PURE_FILE_NAME(__FILE__),__LINE__,__FUNCTION__,##args, strerror(errno)); \
+        fprintf(stderr, "error:%s(%d)-%s:\n"fmt": %s\n", PURE_FILE_NAME(__FILE__),__LINE__,__FUNCTION__,##args, strerror(errno)); \
         fflush(stderr); \
     } while (0)
 
 #define    TRACE_PARAM_WRONG(fmt, args...) \
     do \
     { \
-        printf("param wrong:\n"fmt"\n", ##args); \
+        fprintf(stderr, "param wrong:\n"fmt"\n", ##args); \
         fflush(stderr); \
     } while (0)
 

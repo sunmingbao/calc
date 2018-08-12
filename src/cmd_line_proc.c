@@ -68,7 +68,7 @@ static void print_opt_list(const char *description[])
 	struct option *cur_opt = cmd_line_options;
 	int idx = 0;
 	while (cur_opt->name) {
-		printf("--%s: %s argument\n"
+		printf("    --%s: %s argument\n"
 			"    %s\n"
 			, cur_opt->name, (cur_opt->has_arg==no_argument)?"no":"has"
 			, description ? description[idx] : "");
@@ -77,13 +77,41 @@ static void print_opt_list(const char *description[])
 	}
 }
 
+static void print_examples(void)
+{
+	printf("\n\n"
+		"[EXAMPLES]\n\n"
+		"    The following are examples of valid usage.                                               \n"
+		"    To avoid expanding mechanism from shell, some operators are surrounded with '' or \"\".  \n"
+		"                                                                                             \n"
+		"                calc 1 + 2                                                                   \n"
+		"                calc 1 - 3                                                                   \n"
+		"                calc -3 '*' 8                                                                \n"
+		"                calc 0x1234 '*' 0X5678                                                       \n"
+		"                calc 0123 - 8                                                                \n"
+		"                calc 0B10100101 % 0b1100                                                     \n"
+		"                calc 2 \"<<\" 10                                                             \n"
+		"                calc \"++\" 1023                                                             \n"
+		"                calc \"~\" 0xF                                                               \n"
+		"                calc 5 '>' 6                                                                 \n"
+		"\n\n\n");
+}
 static void show_usage(const char *exe_file_name)
 {
-	printf("%s  [options]  OPu  operand1\n", exe_file_name);
-	printf("%s  [options]  operand1  OPb  operand2\n", exe_file_name);
+	printf("\n\n[SYNOPSIS]\n\n");
+	printf("    %s  [options]  OPu  operand1\n", exe_file_name);
+	printf("    %s  [options]  operand1  OPb  operand2\n", exe_file_name);
 
-	printf("[options]\n");
+	print_examples();
+
+	printf("[options]\n\n");
 	print_opt_list(NULL);
+
+
+	printf("[NOTE]\n\n"
+		"    detailed description can be found at the following URL:\n"
+		"        %s\n\n"
+	, "https://github.com/sunmingbao/calc");
 
 }
 

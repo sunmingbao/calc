@@ -1,4 +1,7 @@
+#include <stdarg.h>
+
 #include "trace_dbg.h"
+#include "cmd_line_proc.h"
 
 void print_mem(void *start_addr, uint32_t length)
 {
@@ -47,3 +50,26 @@ void print_mem(void *start_addr, uint32_t length)
 
 
 }
+
+void verbose_print(const char *fmt, ...)
+{
+	int len;
+	char buf[512];
+	va_list ap;
+
+	static struct work_params * the_work_params;
+
+	if (!the_work_params)  
+		the_work_params	= get_work_params();
+
+	if (!the_work_params->verbose)
+		return;
+
+	va_start(ap, fmt);
+	len = vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+
+	fprintf(stdout, "%s", buf);
+	fflush(stdout);
+}
+

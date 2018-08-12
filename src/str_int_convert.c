@@ -64,7 +64,7 @@ static uint64_t neg_value(uint64_t orig)
 	return (~orig) + 1;
 }
 
-static uint64_t str2decimal(const char *str)
+uint64_t str2decimal(const char *str)
 {
 	int str_len = strlen(str);
 	uint8_t digits[str_len];
