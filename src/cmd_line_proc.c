@@ -109,6 +109,24 @@ void parse_cmd_line_args(int argc, char *argv[])
 				TRACE_DBG("verbose enabled");
 				break;
 
+
+			case OPT_OUTPUT_BASE_2:
+				the_work_params.output_base = 2;
+				break;
+
+			case OPT_OUTPUT_BASE_8:
+				the_work_params.output_base = 8;
+				break;
+
+			case OPT_OUTPUT_BASE_16:
+				the_work_params.output_base = 16;
+				break;
+
+
+			case OPT_OUTPUT_NO_PREFIX:
+				the_work_params.flags |= FLAG_OUTPUT_NO_PREFIX;
+				break;
+
 			case 'h':
 			case 'H':
 			case OPT_HELP:
