@@ -31,18 +31,18 @@
 [EXAMPLES]
 
         The following are examples of valid usage.
-        To avoid expanding mechanism from shell, some operators are surrounded with '' or "".
+        To avoid expanding mechanism from shell, some operators are surrounded with "".
 
                 calc 1 + 2
                 calc 1 - 3
-                calc -3 '*' 8
-                calc 0x1234 '*' 0X5678
+                calc -3 "*" 8
+                calc 0x1234 "*" 0X5678
                 calc 0123 - 8
-                calc 0B10100101 % 0b1100
-                calc 2 "<<" 10
+                calc 0B10100101 "%" 0b1100
+                calc 1 "<<" 10
                 calc "++" 1023
                 calc "~" 0xF
-                calc 5 '>' 6
+                calc 5 ">" 6
 
 
 [OPERAND]
@@ -51,15 +51,7 @@
         0b/0B               2  (bin)
         0                   8  (octal)
         0x/0X               16 (hex)
-        nothing or +/-      10 (decimal)
-
-        if an operand does not starts with any of the above prefix,
-    then calc would determine its base with the following logic.
-
-        if (operand contains char in [a-f] or [A-F])
-                base=16
-        else
-                base=10
+        [+ or -]<1~9 >      10 (decimal)
 
 
 [OPERATORS]
