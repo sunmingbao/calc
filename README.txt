@@ -3,8 +3,8 @@
 
 [SYNOPSIS]
 
-        calc  OPu  operand1
-        calc  operand1  OPb  operand2
+        calc  [options]  OPu  operand1
+        calc  [options]  operand1  OPb  operand2
 
 
 [DESCRIPTION]
@@ -66,25 +66,28 @@
 
         SYNTAX            TYPE      DESCRIPTION
         +  -  *  /  %     unary     normal arithmetical operators
-        ++ -- ~  !  !!    unary     !  means operand==0?1:0
-                                    !! means operand==0?0:1
+        ++ -- ~           unary     normal unary operators
         & | ^             binary    normal bitwise operators
         <<  >>            binary    normal shift operators
+        > >= < <= !=      binary    normal relationship operators
 
 
 [OPTIONS]
 
-        --output-2
+        The default output format is signed decimal. However, following options can be 
+    used to customize the output.
+    
+        --output-base-2
         --output-bin
             output result in binary format.
         
-        --output-8
+        --output-base-8
         --output-oct
             output result in octal format.
         
-        --output-16
+        --output-base-16
         --output-hex
             output result in hex format.
         
-        --no-prefix
+        --output-no-prefix
             output result without prefix such as 0/0x/0X/0b/0B.

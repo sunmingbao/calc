@@ -11,9 +11,12 @@ extern "C" {
 #define    FLAG_OUTPUT_NO_PREFIX    0x1
 
 struct work_params {
-	const char *operator;
-	const char *operand1;
-	const char *operand2;
+	int verbose;
+
+	int arg_num;
+	char operator[8];
+	char operand1[128];
+	char operand2[128];
 	int output_base;
 	uint32_t flags;
 };
