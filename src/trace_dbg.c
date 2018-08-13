@@ -3,6 +3,7 @@
 #include "trace_dbg.h"
 #include "cmd_line_proc.h"
 
+#ifdef __DEBUG_PRINT
 void print_mem(void *start_addr, uint32_t length)
 {
     char str_addr[32];
@@ -50,6 +51,7 @@ void print_mem(void *start_addr, uint32_t length)
 
 
 }
+#endif
 
 void verbose_print(const char *fmt, ...)
 {

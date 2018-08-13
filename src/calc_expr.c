@@ -148,37 +148,6 @@ uint64_t calc_expr_unary(const char *operator, const char *operand1)
 
 }
 
-void test_calc_expr_binary_core(void)
-{
-	assert(calc_expr_binary_core("+", 1, 2)==3);
-	assert(calc_expr_binary_core("-", 5, 1)==4);
-	assert(calc_expr_binary_core("*", 4, 2)==8);
-	assert(calc_expr_binary_core("/", 100, 2)==50);
-	assert(calc_expr_binary_core("==", 100, 2)==0);
-	assert(calc_expr_binary_core("!=", 100, 2)==1);
-	assert(calc_expr_binary_core("==", 100, 100)==1);
-	assert(calc_expr_binary_core("!=", 100, 100)==0);
-}
-
-void test_calc_expr_binary(void)
-{
-	assert(calc_expr_binary("+",  "1", "2")==3);
-	assert(calc_expr_binary("-",  "5", "1")==4);
-	assert(calc_expr_binary("*",  "4", "2")==8);
-	assert(calc_expr_binary("/",  "100", "2")==50);
-	assert(calc_expr_binary("==", "100", "2")==0);
-	assert(calc_expr_binary("!=", "100", "2")==1);
-	assert(calc_expr_binary("==", "100", "100")==1);
-	assert(calc_expr_binary("!=", "100", "100")==0);
-}
-
-
-void test_calc_expr_unary(void)
-{
-	assert(calc_expr_unary("++",  "2")==3);
-	assert(calc_expr_unary("--",  "2")==1);
-	assert(calc_expr_unary("~",  "-1")==0);
-}
 
 void print_u64_in_bin(uint64_t result)
 {
@@ -247,7 +216,10 @@ void calc_expr(void)
 {
 	struct work_params * the_work_params = get_work_params();
 	uint64_t result;
-
+#if 0
+str2int_test();
+test_calc();
+#endif
 	if (the_work_params->arg_num==2) {
 		verbose_print("unary calculate\n");
 		verbose_print("operator is %s\n", the_work_params->operator);
@@ -264,4 +236,44 @@ void calc_expr(void)
 	}
 
 	output_result(result);
+}
+
+/**** test code ****/
+void test_calc_expr_binary_core(void)
+{
+	assert(calc_expr_binary_core("+", 1, 2)==3);
+	assert(calc_expr_binary_core("-", 5, 1)==4);
+	assert(calc_expr_binary_core("*", 4, 2)==8);
+	assert(calc_expr_binary_core("/", 100, 2)==50);
+	assert(calc_expr_binary_core("==", 100, 2)==0);
+	assert(calc_expr_binary_core("!=", 100, 2)==1);
+	assert(calc_expr_binary_core("==", 100, 100)==1);
+	assert(calc_expr_binary_core("!=", 100, 100)==0);
+}
+
+void test_calc_expr_binary(void)
+{
+	assert(calc_expr_binary("+",  "1", "2")==3);
+	assert(calc_expr_binary("-",  "5", "1")==4);
+	assert(calc_expr_binary("*",  "4", "2")==8);
+	assert(calc_expr_binary("/",  "100", "2")==50);
+	assert(calc_expr_binary("==", "100", "2")==0);
+	assert(calc_expr_binary("!=", "100", "2")==1);
+	assert(calc_expr_binary("==", "100", "100")==1);
+	assert(calc_expr_binary("!=", "100", "100")==0);
+}
+
+
+void test_calc_expr_unary(void)
+{
+	assert(calc_expr_unary("++",  "2")==3);
+	assert(calc_expr_unary("--",  "2")==1);
+	assert(calc_expr_unary("~",  "-1")==0);
+}
+
+void test_calc(void)
+{
+	test_calc_expr_binary_core();
+	test_calc_expr_binary();
+	test_calc_expr_unary();
 }

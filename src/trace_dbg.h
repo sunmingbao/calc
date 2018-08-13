@@ -18,7 +18,7 @@ extern "C" {
 
 void verbose_print(const char *fmt, ...);
 
-#define    __DEBUG_PRINT
+//#define    __DEBUG_PRINT
 
 #ifdef __DEBUG_PRINT
 #define    TRACE_DBG(fmt, args...) \

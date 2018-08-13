@@ -8,6 +8,7 @@ extern "C" {
 
 
 void calc_expr(void);
+void test_calc(void);
 
 
 #ifdef __cplusplus

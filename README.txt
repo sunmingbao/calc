@@ -86,3 +86,8 @@
 
         --output-no-prefix
             output result without prefix such as 0/0x/0X/0b/0B.
+
+
+[AUTHOR]
+
+        SUN Mingbao <sunmingbao@126.com>

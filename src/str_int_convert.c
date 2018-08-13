@@ -18,6 +18,47 @@ static uint64_t str2uint_core(uint8_t digits[], int size, uint8_t base)
 
 }
 
+static int char_is_bin_digit(char c)
+{
+	return ((c>='0') && (c<='1'));
+}
+
+static int char_is_oct_digit(char c)
+{
+	return ((c>='0') && (c<='7'));
+}
+
+static int char_is_decimal_digit(char c)
+{
+	return ((c>='0') && (c<='9'));
+}
+
+static int char_is_hex_digit(char c)
+{
+	if ((c>='0') && (c<='9'))
+		return 1;
+
+	if ((c>='a') && (c<='f'))
+		return 1;
+
+	if ((c>='A') && (c<='F'))
+		return 1;
+
+	return 0;
+}
+
+static int char_is_digit_of_base(char c, int base)
+{
+	if (base==2) return char_is_bin_digit(c);
+	if (base==8) return char_is_oct_digit(c);
+	if (base==10) return char_is_decimal_digit(c);
+	if (base==16) return char_is_hex_digit(c);
+
+
+	return 0;
+}
+
+
 #define INVALID_DIG_VALUE    (255)
 static uint8_t digit_char_to_u8(const char c)
 {
@@ -41,13 +82,16 @@ EXIT:
 	return (uint8_t)ret;
 }
 
-static int str2digits(const char *str, int str_len, uint8_t digits[])
+static int str2digits(const char *str, int str_len, uint8_t digits[], int base)
 {
 	int size = 0;
 	int i;
 	uint8_t digit;
 
 	for (i=0; i<str_len; i++) {
+		if (!char_is_digit_of_base(str[i],base))
+			continue;
+
 		digit = digit_char_to_u8(str[i]);
 		if (digit != INVALID_DIG_VALUE) {
 			digits[size] = digit;
@@ -72,7 +116,7 @@ uint64_t str2decimal(const char *str)
 	int is_neg = (str[0]=='-'?1:0);
 	uint64_t ret;
 
-	size = str2digits(str, str_len, digits);
+	size = str2digits(str, str_len, digits, 10);
 	ret = str2uint_core(digits, size, 10);
 
 	if (is_neg)
@@ -89,7 +133,7 @@ static uint64_t str2uint(const char *str, int base)
 	int size = 0;
 	uint64_t ret;
 
-	size = str2digits(str, str_len, digits);
+	size = str2digits(str, str_len, digits, base);
 	ret = str2uint_core(digits, size, base);
 
 	return ret;
@@ -111,13 +155,8 @@ int every_char_is_hex(const char *str)
 {
 	char c;
 	while (c=(*str)) {
-		if ((c>='0') && (c<='9'))
-			goto NEXT_LOOP;
 
-		if ((c>='a') && (c<='f'))
-			goto NEXT_LOOP;
-
-		if ((c>='A') && (c<='F'))
+		if (char_is_hex_digit(c))
 			goto NEXT_LOOP;
 
 		return 0;
@@ -153,6 +192,7 @@ static int get_base_sign(const char *str, int *is_neg)
 	}
 
 	c = str[1];
+	if (c==0) return 10;
 
 	if (c=='x' || c=='X') {
 		first_digit+=2;
@@ -167,6 +207,7 @@ static int get_base_sign(const char *str, int *is_neg)
 
 	if (c=='b' || c=='B') {
 		first_digit+=2;
+		TRACE_DBG("%s", first_digit);
 		if (!strlen(first_digit))
 			goto ERR_EXIT;
 
@@ -192,6 +233,7 @@ int str2int(const char *str, uint64_t *result, int *is_neg)
 	int base;
 
 	base = get_base_sign(str, is_neg);
+	TRACE_DBG("base=%d", base);
 	if (base==10)
 		*result = str2decimal(str);
 	else
