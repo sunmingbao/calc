@@ -180,19 +180,73 @@ void test_calc_expr_unary(void)
 	assert(calc_expr_unary("~",  "-1")==0);
 }
 
+void print_u64_in_bin(uint64_t result)
+{
+	int lshifted_bit_nr = 0;
+	int bit_nr_to_print;
+	if (0==result) {
+		printf("0");
+		return;
+	}
+
+	while (!(result & 0x8000000000000000)) {
+		result = (result<<1);
+		lshifted_bit_nr++;
+	}
+
+	bit_nr_to_print = 64 - lshifted_bit_nr;
+	while (bit_nr_to_print) {
+		printf("%c", (result & 0x8000000000000000)?'1':'0');
+		result = (result<<1);
+		bit_nr_to_print--;
+	}
+}
+
+
 void output_result(uint64_t result)
 {
-	printf("%"PRId64"\n", result);
+	struct work_params * the_work_params = get_work_params();
+
+	if (the_work_params->output_base==10) {
+		if (the_work_params->flags & FLAG_OUTPUT_UNSIGNED_DECIMAL)
+			printf("%"PRIu64"\n", result);
+		else
+			printf("%"PRId64"\n", result);
+		return;
+	}
+
+	if (the_work_params->output_base==8) {
+		if (the_work_params->flags & FLAG_OUTPUT_NO_PREFIX)
+			printf("%"PRIo64"\n", result);
+		else
+			printf("0%"PRIo64"\n", result);
+		return;
+	}
+
+
+	if (the_work_params->output_base==16) {
+		if (the_work_params->flags & FLAG_OUTPUT_NO_PREFIX)
+			printf("%"PRIx64"\n", result);
+		else
+			printf("0x%"PRIx64"\n", result);
+		return;
+	}
+
+
+	if (the_work_params->output_base==2) {
+		if (!(the_work_params->flags & FLAG_OUTPUT_NO_PREFIX))
+			printf("0b");
+
+		print_u64_in_bin(result);
+		printf("\n");
+
+	}
 }
 
 void calc_expr(void)
 {
 	struct work_params * the_work_params = get_work_params();
 	uint64_t result;
-
-	test_calc_expr_binary_core();
-	test_calc_expr_binary();
-	test_calc_expr_unary();
 
 	if (the_work_params->arg_num==2) {
 		verbose_print("unary calculate\n");

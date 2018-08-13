@@ -109,7 +109,7 @@ static void show_usage(const char *exe_file_name)
 
 
 	printf("[NOTE]\n\n"
-		"    detailed description can be found at the following URL:\n"
+		"    detailed description can be found in README.txt or at the following URL:\n"
 		"        %s\n\n"
 	, "https://github.com/sunmingbao/calc");
 
@@ -124,17 +124,15 @@ void modify_neg_args(int argc, char *argv[])
 		if (argv[i][0]!='-') continue;
 
 		c = argv[i][1];
-		if (c<'0' && c>'9') continue;
+		if (c<'0' || c>'9') continue;
 
 		argv[i][0]='m';
-		
 	}
 }
 
 void restore_neg_args(int argc, char *argv[])
 {
 	int i;
-	char c;
 
 	for (i=1; i<argc; i++) {
 		if (argv[i][0]!='m') continue;
