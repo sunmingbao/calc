@@ -1,4 +1,4 @@
-AC_INIT([calc], [0.1.1], [sunmingbao@126.com])
+AC_INIT([calc], [0.1.2], [sunmingbao@126.com])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_PROG_CC
 AC_CONFIG_HEADERS([config.h])
