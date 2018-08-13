@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <assert.h>
+#include <inttypes.h>
 
 #include "trace_dbg.h"
 #include "calc_expr.h"
@@ -181,7 +182,7 @@ void test_calc_expr_unary(void)
 
 void output_result(uint64_t result)
 {
-	printf("%llu\n", result);
+	printf("%"PRId64"\n", result);
 }
 
 void calc_expr(void)

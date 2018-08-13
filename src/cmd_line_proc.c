@@ -115,6 +115,35 @@ static void show_usage(const char *exe_file_name)
 
 }
 
+void modify_neg_args(int argc, char *argv[])
+{
+	int i;
+	char c;
+
+	for (i=1; i<argc; i++) {
+		if (argv[i][0]!='-') continue;
+
+		c = argv[i][1];
+		if (c<'0' && c>'9') continue;
+
+		argv[i][0]='m';
+		
+	}
+}
+
+void restore_neg_args(int argc, char *argv[])
+{
+	int i;
+	char c;
+
+	for (i=1; i<argc; i++) {
+		if (argv[i][0]!='m') continue;
+
+		argv[i][0]='-';
+		
+	}
+}
+
 void parse_cmd_line_args(int argc, char *argv[])
 {
 	int opt;
@@ -122,6 +151,8 @@ void parse_cmd_line_args(int argc, char *argv[])
 	int orig_optind = optind;
 	int new_optind;
 	int args_left;
+
+	modify_neg_args(argc, argv);
 
 	while ((opt = getopt_long(argc, argv, "vHh", cmd_line_options, NULL)) != -1){
 		switch (opt)  {
@@ -162,7 +193,6 @@ void parse_cmd_line_args(int argc, char *argv[])
 			case 'H':
 			case OPT_HELP:
 			default: /* '?' */
-
 				show_usage(PURE_FILE_NAME(argv[0]));
 				exit(0);
 
@@ -177,6 +207,8 @@ void parse_cmd_line_args(int argc, char *argv[])
 		show_usage(PURE_FILE_NAME(argv[0]));
 		exit(0);
 	}
+
+	restore_neg_args(argc, argv);
 
 	if (args_left==2) {
 		the_work_params.arg_num = 2;
