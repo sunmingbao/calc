@@ -42,6 +42,13 @@ uint64_t calc_expr_binary_core(const char *operator, uint64_t operand1, uint64_t
 		goto EXIT;
 	}
 
+	if (strcmp(operator, "%")==0) {
+		if (0==operand2)
+			TRACE_PARAM_WRONG_QUIT("operand1 mod by 0");
+		ret = operand1%operand2;
+		goto EXIT;
+	}
+
 	if (strcmp(operator, "==")==0) {
 		ret = (operand1==operand2);
 		goto EXIT;
@@ -96,6 +103,8 @@ uint64_t calc_expr_binary_core(const char *operator, uint64_t operand1, uint64_t
 		ret = (operand1>>operand2);
 		goto EXIT;
 	}
+
+	TRACE_PARAM_WRONG_QUIT("unknown binary operator %s", operator);
 EXIT:
 	return ret;
 }
@@ -121,6 +130,17 @@ uint64_t calc_expr_unary_core(const char *operator, uint64_t operand1)
 		goto EXIT;
 	}
 
+	if (strcmp(operator, "!")==0) {
+		ret = !operand1;
+		goto EXIT;
+	}
+
+	if (strcmp(operator, "!!")==0) {
+		ret = !!operand1;
+		goto EXIT;
+	}
+
+	TRACE_PARAM_WRONG_QUIT("unknown unary operator %s", operator);
 
 EXIT:
 	return ret;

@@ -22,7 +22,7 @@ struct work_params *get_work_params(void)
 static void show_version(void)
 {
 	printf("%s version %s\n"
-		"(Author's Email : %s)\n"
+		"written by SUN Mingbao <%s>\n"
 		, PACKAGE_NAME, PACKAGE_VERSION
 		, PACKAGE_BUGREPORT);
 
@@ -82,18 +82,19 @@ static void print_examples(void)
 	printf("\n\n"
 		"[EXAMPLES]\n\n"
 		"    The following are examples of valid usage.                                               \n"
-		"    To avoid expanding mechanism from shell, some operators are surrounded with \"\".        \n"
+		"    To avoid expanding mechanism from shell, some operators are surrounded with \" or '      \n"
 		"                                                                                             \n"
 		"                calc 1 + 2                                                                   \n"
 		"                calc 1 - 3                                                                   \n"
-		"                calc -3 \"*\" 8                                                                \n"
-		"                calc 0x1234 \"*\" 0X5678                                                       \n"
+		"                calc -3 \"*\" 8                                                              \n"
+		"                calc 0x1234 \"*\" 0X5678                                                     \n"
 		"                calc 0123 - 8                                                                \n"
-		"                calc 0B10100101 \"%\" 0b1100                                                     \n"
+		"                calc 0B10100101 \"%\" 0b1100                                                 \n"
 		"                calc 1 \"<<\" 10                                                             \n"
 		"                calc \"++\" 1023                                                             \n"
 		"                calc \"~\" 0xF                                                               \n"
-		"                calc 5 \">\" 6                                                                 \n"
+		"                calc '!' 0xF                                                                 \n"
+		"                calc 5 \">\" 6                                                               \n"
 		"\n\n\n");
 }
 static void show_usage(const char *exe_file_name)
@@ -115,7 +116,7 @@ static void show_usage(const char *exe_file_name)
 
 }
 
-void modify_neg_args(int argc, char *argv[])
+void modify_special_args(int argc, char *argv[])
 {
 	int i;
 	char c;
@@ -123,14 +124,21 @@ void modify_neg_args(int argc, char *argv[])
 	for (i=1; i<argc; i++) {
 		if (argv[i][0]!='-') continue;
 
-		c = argv[i][1];
-		if (c<'0' || c>'9') continue;
+		if (argv[i][1]==0) goto MODIFY;
 
+		c = argv[i][1];
+		if (c>='0' && c<='9') goto MODIFY;
+
+		if (argv[i][1]=='-' && argv[i][2]==0) goto MODIFY;
+
+		continue;
+
+MODIFY:
 		argv[i][0]='m';
 	}
 }
 
-void restore_neg_args(int argc, char *argv[])
+void restore_special_args(int argc, char *argv[])
 {
 	int i;
 
@@ -150,7 +158,7 @@ void parse_cmd_line_args(int argc, char *argv[])
 	int new_optind;
 	int args_left;
 
-	modify_neg_args(argc, argv);
+	modify_special_args(argc, argv);
 
 	while ((opt = getopt_long(argc, argv, "vHh", cmd_line_options, NULL)) != -1){
 		switch (opt)  {
@@ -206,7 +214,7 @@ void parse_cmd_line_args(int argc, char *argv[])
 		exit(0);
 	}
 
-	restore_neg_args(argc, argv);
+	restore_special_args(argc, argv);
 
 	if (args_left==2) {
 		the_work_params.arg_num = 2;

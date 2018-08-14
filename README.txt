@@ -31,7 +31,7 @@
 [EXAMPLES]
 
         The following are examples of valid usage.
-        To avoid expanding mechanism from shell, some operators are surrounded with "".
+        To avoid expanding mechanism from shell, some operators are surrounded with " or '.
 
                 calc 1 + 2
                 calc 1 - 3
@@ -42,6 +42,7 @@
                 calc 1 "<<" 10
                 calc "++" 1023
                 calc "~" 0xF
+                calc '!' 0xF
                 calc 5 ">" 6
 
 
@@ -58,7 +59,7 @@
 
         SYNTAX            TYPE      DESCRIPTION
         +  -  *  /  %     unary     normal arithmetical operators
-        ++ -- ~           unary     normal unary operators
+        ++ -- ~  !  !!    unary     normal unary operators
         & | ^             binary    normal bitwise operators
         <<  >>            binary    normal shift operators
         > >= < <= !=      binary    normal relationship operators
