@@ -58,7 +58,7 @@
 [OPERATORS]
 
         SYNTAX            TYPE      DESCRIPTION
-        +  -  *  /  %     unary     normal arithmetical operators
+        + - * / % **      unary     normal arithmetical operators
         ++ -- ~  !  !!    unary     normal unary operators
         & | ^             binary    normal bitwise operators
         <<  >>            binary    normal shift operators

@@ -18,6 +18,10 @@ extern "C" {
 
 void verbose_print(const char *fmt, ...);
 
+/*
+ * for debugging, pass CFLAGS=-D__DEBUG_PRINT to configure
+ */
+
 //#define    __DEBUG_PRINT
 
 #ifdef __DEBUG_PRINT

@@ -14,6 +14,18 @@ struct operand {
 	};
 };
 
+static uint64_t calc_power(uint64_t operand1, uint64_t operand2)
+{
+	uint64_t ret = 1;
+
+	while (operand2) {
+		ret *= operand1;
+		operand2--;
+	}
+
+	return ret;
+}
+
 uint64_t calc_expr_binary_core(const char *operator, uint64_t operand1, uint64_t operand2)
 {
 	uint64_t ret;
@@ -46,6 +58,11 @@ uint64_t calc_expr_binary_core(const char *operator, uint64_t operand1, uint64_t
 		if (0==operand2)
 			TRACE_PARAM_WRONG_QUIT("operand1 mod by 0");
 		ret = operand1%operand2;
+		goto EXIT;
+	}
+
+	if (strcmp(operator, "**")==0) {
+		ret = calc_power(operand1, operand2);
 		goto EXIT;
 	}
 
@@ -152,7 +169,16 @@ uint64_t calc_expr_binary(const char *operator, const char *operand1, const char
 	uint64_t result, operand1_uint, operand2_uint;
 
 	str2int(operand1, &operand1_uint, NULL);
+	verbose_print("operand1=(0x%"PRIx64"|%"PRIu64"|%"PRId64")\n"
+		, operand1_uint
+		, operand1_uint
+		, (int64_t)operand1_uint);
+
 	str2int(operand2, &operand2_uint, NULL);
+	verbose_print("operand2=(0x%"PRIx64"|%"PRIu64"|%"PRId64")\n"
+		, operand2_uint
+		, operand2_uint
+		, (int64_t)operand2_uint);
 
 	return calc_expr_binary_core(operator, operand1_uint, operand2_uint);
 
@@ -163,6 +189,10 @@ uint64_t calc_expr_unary(const char *operator, const char *operand1)
 	uint64_t result, operand1_uint;
 
 	str2int(operand1, &operand1_uint, NULL);
+	verbose_print("operand1=(0x%"PRIx64"|%"PRIu64"|%"PRId64")\n"
+		, operand1_uint
+		, operand1_uint
+		, (int64_t)operand1_uint);
 
 	return calc_expr_unary_core(operator, operand1_uint);
 
@@ -196,35 +226,53 @@ void output_result(uint64_t result)
 {
 	struct work_params * the_work_params = get_work_params();
 
+	verbose_print("result=(0x%"PRIx64"|%"PRIu64"|%"PRId64")\n"
+		, result
+		, result
+		, (int64_t)result);
+
 	if (the_work_params->output_base==10) {
-		if (the_work_params->flags & FLAG_OUTPUT_UNSIGNED_DECIMAL)
+		if (the_work_params->flags & FLAG_OUTPUT_UNSIGNED_DECIMAL) {
+			verbose_print("result output format : unsigned decimal\n");
 			printf("%"PRIu64"\n", result);
-		else
+		} else {
+			verbose_print("result output format : signed decimal\n");
 			printf("%"PRId64"\n", result);
+		}
 		return;
 	}
 
 	if (the_work_params->output_base==8) {
-		if (the_work_params->flags & FLAG_OUTPUT_NO_PREFIX)
+		if (the_work_params->flags & FLAG_OUTPUT_NO_PREFIX) {
+			verbose_print("result output format : oct(no prefix)\n");
 			printf("%"PRIo64"\n", result);
-		else
+		} else {
+			verbose_print("result output format : oct\n");
 			printf("0%"PRIo64"\n", result);
+		}
 		return;
 	}
 
 
 	if (the_work_params->output_base==16) {
-		if (the_work_params->flags & FLAG_OUTPUT_NO_PREFIX)
+		if (the_work_params->flags & FLAG_OUTPUT_NO_PREFIX) {
+			verbose_print("result output format : hex(no prefix)\n");
 			printf("%"PRIx64"\n", result);
-		else
+		} else {
+			verbose_print("result output format : hex\n");
 			printf("0x%"PRIx64"\n", result);
+		}
 		return;
 	}
 
 
 	if (the_work_params->output_base==2) {
-		if (!(the_work_params->flags & FLAG_OUTPUT_NO_PREFIX))
+		if (!(the_work_params->flags & FLAG_OUTPUT_NO_PREFIX)) {
+			verbose_print("result output format : bin\n");
 			printf("0b");
+		} else {
+			verbose_print("result output format : bin(no prefix)\n");
+		}
 
 		print_u64_in_bin(result);
 		printf("\n");
@@ -236,6 +284,11 @@ void calc_expr(void)
 {
 	struct work_params * the_work_params = get_work_params();
 	uint64_t result;
+
+	if (check_operand(the_work_params->operand1))
+		TRACE_PARAM_WRONG_QUIT("operand1 %s is not valid bin/oct/decimal integer", the_work_params->operand1);
+	if (the_work_params->arg_num==2 && check_operand(the_work_params->operand2))
+		TRACE_PARAM_WRONG_QUIT("operand2 %s is not valid bin/oct/decimal integer", the_work_params->operand2);
 #if 0
 str2int_test();
 test_calc();

@@ -47,6 +47,7 @@ static int char_is_hex_digit(char c)
 	return 0;
 }
 
+
 static int char_is_digit_of_base(char c, int base)
 {
 	if (base==2) return char_is_bin_digit(c);
@@ -58,6 +59,16 @@ static int char_is_digit_of_base(char c, int base)
 	return 0;
 }
 
+int check_operand(const char *str)
+{
+	char c;
+	while (c=(*(str++))) {
+		if (char_is_hex_digit(c)) continue;
+		if (c=='X' || c=='x' || c=='b' || c=='B') continue;
+		return 1;
+	}
+	return 0;
+}
 
 #define INVALID_DIG_VALUE    (255)
 static uint8_t digit_char_to_u8(const char c)

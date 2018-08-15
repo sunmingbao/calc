@@ -1,4 +1,4 @@
-AC_INIT([calc], [0.1.4], [mingbao.sun@nokia-sbell.com])
+AC_INIT([calc], [0.1.5], [mingbao.sun@nokia-sbell.com])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_PROG_CC
 AC_CONFIG_HEADERS([config.h])

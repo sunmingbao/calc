@@ -121,7 +121,12 @@ void modify_special_args(int argc, char *argv[])
 	int i;
 	char c;
 
-	for (i=1; i<argc; i++) {
+	verbose_print("%d cmdline args:\n", argc);
+
+	for (i=0; i<argc; i++) {
+
+		verbose_print("argc %d = \"%s\"\n", i, argv[i]);
+
 		if (argv[i][0]!='-') continue;
 
 		if (argv[i][1]==0) goto MODIFY;
@@ -150,6 +155,18 @@ void restore_special_args(int argc, char *argv[])
 	}
 }
 
+static void check_verbose_first(int argc, char *argv[])
+{
+	int i;
+
+	for (i=1; i<argc; i++) {
+		if (strcmp(argv[i], "--verbose")==0) {
+			the_work_params.verbose = 1;
+			return;
+		}
+	}
+}
+
 void parse_cmd_line_args(int argc, char *argv[])
 {
 	int opt;
@@ -158,6 +175,7 @@ void parse_cmd_line_args(int argc, char *argv[])
 	int new_optind;
 	int args_left;
 
+	check_verbose_first(argc, argv);
 	modify_special_args(argc, argv);
 
 	while ((opt = getopt_long(argc, argv, "vHh", cmd_line_options, NULL)) != -1){
